@@ -5,7 +5,9 @@ module.exports = function( grunt ) {
     require( 'time-grunt' )( grunt );
 
     // automatically load required grunt tasks
-    require( 'jit-grunt' )( grunt );
+    require( 'jit-grunt' )( grunt, {
+        useminPrepare : 'grunt-usemin'
+    });
 
     // define the configuration for all tasks
     grunt.initConfig({
@@ -55,11 +57,53 @@ module.exports = function( grunt ) {
             build : {
                 src : [ 'dist/' ]
             }
+        },
+        useminPrepare : {
+            html : 'app/menu.html',
+            options : {
+                dest : 'dist'
+            }
+        },
+        concat : {
+            options : {
+                separator : ';'
+            },
+            dist : {}
+        },
+        uglify : {
+            dist : {}
+        },
+        cssmin : {
+            dist : {}
+        },
+        filerev : {
+            options : {
+                encoding : 'utf8',
+                algorithm : 'md5',
+                length : 20
+            },
+            release : {
+                files : [
+                    {
+                        src : [
+                            'dist/scripts/*.js',
+                            'dist/styles/*.css'
+                        ]
+                    }
+                ]
+            }
+        },
+        usemin : {
+            html : [ 'dist/*.html' ],
+            css : [ 'dist/styles/*.css' ],
+            options : {
+                assetsDirs : [ 'dist', 'dist/styles' ]
+            }
         }
     });
 
     grunt.registerTask( 'build', [
-        'clean', 'jshint', 'copy'
+        'clean', 'jshint', 'copy', 'useminPrepare', 'concat', 'cssmin', 'uglify', 'copy', 'filerev', 'usemin'
     ]);
 
     grunt.registerTask( 'default', [ 'build' ]);
