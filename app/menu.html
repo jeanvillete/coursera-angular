@@ -26,9 +26,23 @@
 
         <div class="container">
             <div class="row row-content" ng-controller="MenuController as menuCtrl">
-                <div class="col-xs-12">
-                    <ul class="media">
-                        <li class="media" ng-repeat="dish in menuCtrl.dishes">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" ng-class="{active:menuCtrl.isSelected(1)}">
+                        <a aria-controls="all menu" role="tab" ng-click="menuCtrl.select(1)">The Menu</a>
+                    </li>
+                    <li role="presentation" ng-class="{active:menuCtrl.isSelected(2)}">
+                        <a aria-controls="appetizers" role="tab" ng-click="menuCtrl.select(2)">Appetizers</a>
+                    </li>
+                    <li role="presentation" ng-class="{active:menuCtrl.isSelected(3)}">
+                        <a aria-controls="mains" role="tab" ng-click="menuCtrl.select(3)">Mains</a>
+                    </li>
+                    <li role="desserts" ng-class="{active:menuCtrl.isSelected(4)}">
+                        <a aria-controls="desserts" role="tab" ng-click="menuCtrl.select(4)">Desserts</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <ul class="media-list tab-pane fade in active">
+                        <li class="media" ng-repeat=" dish in menuCtrl.dishes | filter:menuCtrl.fillText ">
                             <div class="media-left media-middle">
                                 <a href="#">
                                     <img class="media-object img-thumbnail" ng-src="{{dish.image}}" alt="{{dish.name}}">
@@ -40,14 +54,13 @@
                                     <span class="badge">{{ dish.price | currency }}</span>
                                 </h2>
                                 <p>{{dish.description}}</p>
-                                <p>Comment {{dish.comment}}</p>
-                                <p>Type your comment: <input type="text" ng-model="dish.comment"></p>
                             </div>
                         </li>
                     </ul>
                 </div>
             </div>
         </div>
+
         <script src="../bower_components/angular/angular.min.js"></script>
         <script>
             var app = angular.module( 'confusionApp', [] );
@@ -90,6 +103,23 @@
                                 comment: ''
                             }
                         ];
+                this.tab = 1;
+                this.select = function( setTab ) {
+                    this.tab = setTab;
+
+                    if ( setTab === 2 )
+                        this.fillText = 'appetizer';
+                    else if ( setTab === 3 )
+                        this.fillText = 'mains';
+                    else if ( setTab === 4 )
+                        this.fillText = 'dessert';
+                    else
+                        this.fillText = '';
+                }
+                this.isSelected = function( checkTab ) {
+                    return this.tab === checkTab;
+                }
+                this.fillText = '';
             });
         </script>
     </body>
