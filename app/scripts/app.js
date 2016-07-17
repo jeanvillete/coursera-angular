@@ -1,6 +1,7 @@
 'use strict';
 
 var app = angular.module( 'confusionApp', [] );
+
 app.controller( 'MenuController', [ '$scope', function( $scope ){
     $scope.dishes = [
                 {
@@ -66,4 +67,41 @@ app.controller( 'MenuController', [ '$scope', function( $scope ){
     $scope.toggleDetails = function() {
         $scope.showDetails = !$scope.showDetails;
     };
+}]);
+
+app.controller( 'ContactController', [ '$scope', function( $scope ){
+    $scope._feedback = function() {
+        return {
+            mychannel : "",
+            firstName : "",
+            lastName : "",
+            agree : false,
+            email : ""
+        };
+    }
+
+    $scope.feedback = $scope._feedback();
+
+    var channels = [
+        { value : "tel", label:"Tel." },
+        { value : "Email", label:"Email" }
+    ];
+    $scope.channels = channels;
+
+    $scope.invalidChannelSelection = false;
+}]);
+
+app.controller( 'FeedbackController', [ '$scope', function( $scope ){
+    $scope.sendFeedback = function() {
+        console.log( $scope.feedback );
+        if ( $scope.feedback.agree && ( !$scope.feedback.mychannel || $scope.feedback.mychannel == '' ) ) {
+            $scope.invalidChannelSelection = true;
+            console.log( 'incorrect' );
+        } else {
+            $scope.invalidChannelSelection = false;
+            $scope.feedback = $scope._feedback();
+            $scope.feedbackForm.$setPristine();
+            console.log( 'correct' );
+        }
+    }
 }]);
