@@ -2,8 +2,8 @@
 
 var app = angular.module( 'confusionApp' );
 
-app.controller( 'MenuController', [ '$scope', 'menuFactory', function( $scope, menuFactory ){
-    $scope.dishes = menuFactory.getDishes();
+app.controller( 'MenuController', [ '$scope', 'menuService', function( $scope, menuService ){
+    $scope.dishes = menuService.getDishes();
     $scope.tab = 1;
     $scope.select = function( setTab ) {
         $scope.tab = setTab;
@@ -68,8 +68,8 @@ app.controller( 'FeedbackController', [ '$scope', function( $scope ){
     }
 }]);
 
-app.controller( 'DishDetailController', [ '$scope', 'menuFactory', function( $scope, menuFactory ){
-    var dish = menuFactory.getDish( 3 );
+app.controller( 'DishDetailController', [ '$scope', 'menuService', function( $scope, menuService ){
+    var dish = menuService.getDish( 3 );
 
     $scope.dish = dish;
     $scope.sortby = '';
