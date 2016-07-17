@@ -27,13 +27,18 @@ gulp.task( 'clean', function() {
     return del( [ 'dist' ] );
 });
 
-gulp.task( 'usemin', [ 'jshint' ], function () {
-    return gulp.src( './app/menu.html' )
+gulp.task( 'usemin', [ 'jshint', 'copytemplates' ], function () {
+    return gulp.src( './app/index.html' )
         .pipe( usemin({
             css : [ minifycss(), rev() ],
             js : [ ngannotate(), uglify(), rev() ]
         }))
         .pipe( gulp.dest( 'dist/' ) );
+} );
+
+gulp.task( 'copytemplates', function() {
+    return gulp.src( 'app/{contactus,menu,dishdetail}.html' )
+            .pipe( gulp.dest( 'dist' ) );
 } );
 
 gulp.task( 'imagemin', function() {
@@ -68,7 +73,7 @@ gulp.task( 'browser-sync', [ 'default' ], function() {
     browserSync.init( files, {
         server : {
             baseDir : 'dist',
-            index : 'menu.html'
+            index : 'index.html'
         }
     });
 

@@ -40,7 +40,7 @@ app.controller( 'ContactController', [ '$scope', function( $scope ){
             agree : false,
             email : ""
         };
-    }
+    };
 
     $scope.feedback = $scope._feedback();
 
@@ -56,7 +56,7 @@ app.controller( 'ContactController', [ '$scope', function( $scope ){
 app.controller( 'FeedbackController', [ '$scope', function( $scope ){
     $scope.sendFeedback = function() {
         console.log( $scope.feedback );
-        if ( $scope.feedback.agree && ( !$scope.feedback.mychannel || $scope.feedback.mychannel == '' ) ) {
+        if ( $scope.feedback.agree && ( !$scope.feedback.mychannel || $scope.feedback.mychannel === '' ) ) {
             $scope.invalidChannelSelection = true;
             console.log( 'incorrect' );
         } else {
@@ -65,7 +65,7 @@ app.controller( 'FeedbackController', [ '$scope', function( $scope ){
             $scope.feedbackForm.$setPristine();
             console.log( 'correct' );
         }
-    }
+    };
 }]);
 
 app.controller( 'DishDetailController', [ '$scope', 'menuService', function( $scope, menuService ){
@@ -81,7 +81,7 @@ app.controller( 'DishDetailController', [ '$scope', 'menuService', function( $sc
             comment : '',
             date : new Date()
         };
-    }
+    };
 
     $scope.comment = _comment();
 
