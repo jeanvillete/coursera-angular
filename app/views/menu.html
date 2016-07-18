@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="row row-content" ng-controller="MenuController">
+    <div class="row row-content" >
         <button ng-click="toggleDetails()" class="btn btn-xs btn-primary pull-right" type="button">
             {{showDetails ? 'Hide Details' : 'Show Details'}}
         </button>
@@ -21,7 +21,7 @@
             <ul class="media-list tab-pane fade in active">
                 <li class="media" ng-repeat=" dish in dishes | filter:fillText ">
                     <div class="media-left media-middle">
-                        <a ng-href="#/menu/{{dish.id}}">
+                        <a ui-sref="app.dishdetails( dish )">
                             <img class="media-object img-thumbnail" ng-src="{{dish.image}}" alt="{{dish.name}}">
                         </a>
                     </div>

@@ -37,9 +37,9 @@ gulp.task( 'usemin', [ 'jshint', 'copytemplates' ], function () {
 } );
 
 gulp.task( 'copytemplates', function() {
-    return gulp.src( 'app/{contactus,menu,dishdetail}.html' )
-            .pipe( gulp.dest( 'dist' ) );
-} );
+    return gulp.src( 'app/views/**/*.html' )
+            .pipe( gulp.dest( 'dist/views' ) );
+});
 
 gulp.task( 'imagemin', function() {
     return del( [ 'dist/images' ] ),

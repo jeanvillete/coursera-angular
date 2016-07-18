@@ -68,8 +68,8 @@ app.controller( 'FeedbackController', [ '$scope', function( $scope ){
     };
 }]);
 
-app.controller( 'DishDetailController', [ '$scope', '$routeParams', 'menuService', function( $scope, $routeParams, menuService ){
-    var dish = menuService.getDish( parseInt( $routeParams.id, 10 ) );
+app.controller( 'DishDetailController', [ '$scope', '$stateParams', 'menuService', function( $scope, $stateParams, menuService ){
+    var dish = menuService.getDish( parseInt( $stateParams.id, 10 ) );
 
     $scope.dish = dish;
     $scope.sortby = '';
