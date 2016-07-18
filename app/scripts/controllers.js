@@ -3,16 +3,9 @@
 angular.module( 'confusionApp' )
     .controller( 'MenuController', [ '$scope', 'menuService', function( $scope, menuService ){
         
-        $scope.showMenu = false;
+        $scope.showMenu = true;
         $scope.message = "Loading ...";
-        $scope.dishes = [];
-        menuService.getDishes()
-            .then( function( response ){
-                $scope.dishes = response.data;
-                $scope.showMenu = true;
-            }, function( response ) {
-                $scope.message = "Error: " + response.status + " " + response.statusText;
-            });
+        $scope.dishes = menuService.getDishes().query();
 
         $scope.tab = 1;
         $scope.select = function( setTab ) {
@@ -77,15 +70,9 @@ angular.module( 'confusionApp' )
     }])
     .controller( 'DishDetailController', [ '$scope', '$stateParams', 'menuService', function( $scope, $stateParams, menuService ){
         $scope.dish = {};
-        $scope.showDish = false;
+        $scope.showDish = true;
         $scope.message = "Loading ...";
-        menuService.getDish( parseInt( $stateParams.id, 10 ) )
-            .then( function( response ){
-                $scope.dish = response.data;
-                $scope.showDish = true;
-            }, function( response ) {
-                $scope.message = "Error: " + response.status + " " + response.statusText;
-            });
+        $scope.dish = menuService.getDishes().get( { id : parseInt( $stateParams.id, 10 ) } );
 
         $scope.sortby = '';
         
@@ -108,15 +95,9 @@ angular.module( 'confusionApp' )
     }])
     .controller( 'IndexController', [ '$scope', 'menuService', 'corporateFactory', function( $scope, menuService, corporateFactory ){
         $scope.dish = {};
-        $scope.showDish = false;
+        $scope.showDish = true;
         $scope.message = "Loading ...";
-        menuService.getDish( 0 )
-            .then( function( response ){
-                $scope.dish = response.data;
-                $scope.showDish = true;
-            }, function( response ) {
-                $scope.message = "Error: " + response.status + " " + response.statusText;
-            });
+        $scope.dish = menuService.getDishes().get( { id : 0 } );
 
         var promotion = menuService.getPromotion( 0 );
         $scope.promotion = promotion;

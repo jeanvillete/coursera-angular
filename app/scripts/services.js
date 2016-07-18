@@ -1,12 +1,9 @@
 'use strict';
 angular.module( 'confusionApp' )
     .constant( 'baseURL', 'http://localhost:3000/' )
-    .service( 'menuService', [ '$http', 'baseURL', function( $http, baseURL ) {
+    .service( 'menuService', [ '$resource', 'baseURL', function( $resource, baseURL ) {
         this.getDishes = function() {
-            return $http.get( baseURL + 'dishes' );
-        };
-        this.getDish = function( index ) {
-            return $http.get( baseURL + 'dishes/' + index );
+            return $resource( baseURL + 'dishes/:id', null, { 'update' : { method : 'PUT' } } );
         };
 
         var promotions = [
