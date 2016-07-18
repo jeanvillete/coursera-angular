@@ -2,10 +2,16 @@
 
 angular.module( 'confusionApp' )
     .controller( 'MenuController', [ '$scope', 'menuService', function( $scope, menuService ){
+        
+        $scope.showMenu = false;
+        $scope.message = "Loading ...";
         $scope.dishes = [];
         menuService.getDishes()
             .then( function( response ){
                 $scope.dishes = response.data;
+                $scope.showMenu = true;
+            }, function( response ) {
+                $scope.message = "Error: " + response.status + " " + response.statusText;
             });
 
         $scope.tab = 1;
@@ -71,10 +77,14 @@ angular.module( 'confusionApp' )
     }])
     .controller( 'DishDetailController', [ '$scope', '$stateParams', 'menuService', function( $scope, $stateParams, menuService ){
         $scope.dish = {};
+        $scope.showDish = false;
+        $scope.message = "Loading ...";
         menuService.getDish( parseInt( $stateParams.id, 10 ) )
             .then( function( response ){
                 $scope.dish = response.data;
                 $scope.showDish = true;
+            }, function( response ) {
+                $scope.message = "Error: " + response.status + " " + response.statusText;
             });
 
         $scope.sortby = '';
@@ -98,10 +108,14 @@ angular.module( 'confusionApp' )
     }])
     .controller( 'IndexController', [ '$scope', 'menuService', 'corporateFactory', function( $scope, menuService, corporateFactory ){
         $scope.dish = {};
+        $scope.showDish = false;
+        $scope.message = "Loading ...";
         menuService.getDish( 0 )
             .then( function( response ){
                 $scope.dish = response.data;
                 $scope.showDish = true;
+            }, function( response ) {
+                $scope.message = "Error: " + response.status + " " + response.statusText;
             });
 
         var promotion = menuService.getPromotion( 0 );
