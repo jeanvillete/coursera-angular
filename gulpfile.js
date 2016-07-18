@@ -83,3 +83,4 @@ gulp.task( 'browser-sync', [ 'default' ], function() {
 gulp.task( 'default', [ 'clean' ], function() {
     gulp.start( 'usemin', 'imagemin', 'copyfonts' );
 });
+
