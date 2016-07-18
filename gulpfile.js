@@ -27,19 +27,14 @@ gulp.task( 'clean', function() {
     return del( [ 'dist' ] );
 });
 
-gulp.task( 'usemin', [ 'jshint', 'copytemplates' ], function () {
-    return gulp.src( './app/index.html' )
+gulp.task( 'usemin', [ 'jshint' ], function () {
+    return gulp.src( './app/**/*.html' )
         .pipe( usemin({
             css : [ minifycss(), rev() ],
             js : [ ngannotate(), uglify(), rev() ]
         }))
         .pipe( gulp.dest( 'dist/' ) );
 } );
-
-gulp.task( 'copytemplates', function() {
-    return gulp.src( 'app/views/**/*.html' )
-            .pipe( gulp.dest( 'dist/views' ) );
-});
 
 gulp.task( 'imagemin', function() {
     return del( [ 'dist/images' ] ),
