@@ -2,7 +2,12 @@
 
 angular.module( 'confusionApp' )
     .controller( 'MenuController', [ '$scope', 'menuService', function( $scope, menuService ){
-        $scope.dishes = menuService.getDishes();
+        $scope.dishes = [];
+        menuService.getDishes()
+            .then( function( response ){
+                $scope.dishes = response.data;
+            });
+
         $scope.tab = 1;
         $scope.select = function( setTab ) {
             $scope.tab = setTab;
@@ -65,9 +70,13 @@ angular.module( 'confusionApp' )
         };
     }])
     .controller( 'DishDetailController', [ '$scope', '$stateParams', 'menuService', function( $scope, $stateParams, menuService ){
-        var dish = menuService.getDish( parseInt( $stateParams.id, 10 ) );
+        $scope.dish = {};
+        menuService.getDish( parseInt( $stateParams.id, 10 ) )
+            .then( function( response ){
+                $scope.dish = response.data;
+                $scope.showDish = true;
+            });
 
-        $scope.dish = dish;
         $scope.sortby = '';
         
         var _comment = function() {
@@ -82,14 +91,18 @@ angular.module( 'confusionApp' )
         $scope.comment = _comment();
 
         $scope.addComment = function() {
-            dish.comments.push( $scope.comment );
+            $scope.dish.comments.push( $scope.comment );
             $scope.comment = _comment();
             $scope.commentsForm.$setPristine();
         };
     }])
     .controller( 'IndexController', [ '$scope', 'menuService', 'corporateFactory', function( $scope, menuService, corporateFactory ){
-        var dish = menuService.getDish( 0 );
-        $scope.dish = dish;
+        $scope.dish = {};
+        menuService.getDish( 0 )
+            .then( function( response ){
+                $scope.dish = response.data;
+                $scope.showDish = true;
+            });
 
         var promotion = menuService.getPromotion( 0 );
         $scope.promotion = promotion;
