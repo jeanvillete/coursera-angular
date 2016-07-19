@@ -3,9 +3,17 @@
 angular.module( 'confusionApp' )
     .controller( 'MenuController', [ '$scope', 'menuService', function( $scope, menuService ){
         
-        $scope.showMenu = true;
+        $scope.showMenu = false;
         $scope.message = "Loading ...";
-        $scope.dishes = menuService.getDishes().query();
+        $scope.dishes = menuService.getDishes().query(
+            function( response ) {
+                $scope.dishes = response;
+                $scope.showMenu = true;
+            },
+            function( response ) {
+                $scope.message = "Error: " + response.status + " " + response.statusText;
+            }
+        );
 
         $scope.tab = 1;
         $scope.select = function( setTab ) {
@@ -70,9 +78,19 @@ angular.module( 'confusionApp' )
     }])
     .controller( 'DishDetailController', [ '$scope', '$stateParams', 'menuService', function( $scope, $stateParams, menuService ){
         $scope.dish = {};
-        $scope.showDish = true;
+        $scope.showDish = false;
         $scope.message = "Loading ...";
-        $scope.dish = menuService.getDishes().get( { id : parseInt( $stateParams.id, 10 ) } );
+        $scope.dish = menuService.getDishes().get( { id : parseInt( $stateParams.id, 10 ) } )
+            .$promise.then(
+                function( response ) {
+                    $scope.dish = response;
+                    $scope.showDish = true;
+                },
+                function( response ) {
+                    $scope.message = "Error: " + response.status + " " + response.statusText;
+                }
+            );
+        
 
         $scope.sortby = '';
         
@@ -87,17 +105,38 @@ angular.module( 'confusionApp' )
 
         $scope.comment = _comment();
 
-        $scope.addComment = function() {
+        $scope.addComment = function( form ) {
             $scope.dish.comments.push( $scope.comment );
-            $scope.comment = _comment();
-            $scope.commentsForm.$setPristine();
+            menuService.getDishes().update( { id : $scope.dish.id }, $scope.dish )
+                .$promise.then( 
+                    function ( resp ) {
+                        console.log( 'success!' );
+                        console.log( resp );
+                        form.$setPristine();
+                        $scope.comment = _comment();
+                    },
+                    function ( resp ) {
+                        console.log( 'error!' );
+                        console.log( resp );
+                    }
+                 );
+
         };
     }])
     .controller( 'IndexController', [ '$scope', 'menuService', 'corporateFactory', function( $scope, menuService, corporateFactory ){
         $scope.dish = {};
-        $scope.showDish = true;
+        $scope.showDish = false;
         $scope.message = "Loading ...";
-        $scope.dish = menuService.getDishes().get( { id : 0 } );
+        $scope.dish = menuService.getDishes().get( { id : 0 } )
+            .$promise.then(
+                function( response ) {
+                    $scope.dish = response;
+                    $scope.showDish = true;
+                },
+                function( response ) {
+                    $scope.message = "Error: " + response.status + " " + response.statusText;
+                }
+            );
 
         var promotion = menuService.getPromotion( 0 );
         $scope.promotion = promotion;
